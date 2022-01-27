@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/henkiepsau.jpg" type="image/x-icon">
+    <title>Music JavaScript Vanilla</title>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        body {
+            height: 100vh;
+            background: linear-gradient(#5f5, #ff5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .controls ion-icon {
+            font-size: 100px;
+        }
+        
+        .controls ion-icon:active {
+            cursor: pointer;
+        }
+        
+        .controls div {
+            position: relative;
+            width: 100px;
+        }
+        
+        .controls div ion-icon {
+            position: absolute;
+            left: 0;
+        }
+        
+        .controls div ion-icon:nth-of-type(2) {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div>
+            <img id="logo" alt="">
+        </div>
+        <h1><span id="name"></span> - <span id="singer"></span></h1>
+        <div class="controls">
+            <ion-icon name="sync-outline" id="a1" onclick="Sync()"></ion-icon>
+            <ion-icon name="play-skip-back-circle-outline" id="a2" onclick="SkipBack()"></ion-icon>
+            <ion-icon name="play-back-circle-outline" id="a3" onclick="Back()"></ion-icon>
+            <div>
+                <ion-icon name="play-circle-outline" id="b1" onclick="Play()"></ion-icon>
+                <ion-icon name="pause-circle-outline" id="b2" onclick="Pause()"></ion-icon>
+            </div>
+            <ion-icon name="play-forward-circle-outline" id="c1" onclick="Forward()"></ion-icon>
+            <ion-icon name="play-skip-forward-circle-outline" id="c2" onclick="SkipForward()"></ion-icon>
+            <ion-icon name="shuffle-outline" id="c3" onclick="Shuffle()"></ion-icon>
+        </div>
+    </div>
+    <script>
+        const song = [{
+            name: 'Hẹn Kiếp Sau',
+            singer: 'Khả Hiệp',
+            path: './src/henkiepsau.mp3',
+            img: './img/henkiepsau.jpg',
+        }, {
+            name: 'Họ Yêu Ai Mất Rồi',
+            singer: 'Khả Hiệp',
+            path: './src/hoyeuaimatroi.mp3',
+            img: './img/hoyeuaimatroi.jpg',
+        }, {
+            name: 'Nguời Lạ Thoáng Qua',
+            singer: 'Đinh Tùng Huy',
+            path: './src/nguoilathoangqua.mp3',
+            img: './img/nguoilathoangqua.jpg',
+        }];
+        // const $ = document.querySelector.bind(document)
+        // const sync = document.getElementById('c1')
+        // const skip_back = document.getElementById('c2')
+        // const back = document.getElementById('c3')
+        const play = document.getElementById('b1');
+        const pause = document.getElementById('b2');
+        // const forward = document.getElementById('c1')
+        // const skip_forward = document.getElementById('c2')
+        // const shuffle = document.getElementById('c3')
+        const name = document.getElementById('name')
+        const singer = document.getElementById('singer')
+        const img = document.getElementById('logo')
+        const audio = new Audio()
+        var i = 0;
+        var max = song.length - 1;
+
+        getAudio()
+
+        function Play() {
+
+            audio.play()
+            Playing()
+        }
+
+        function Pause() {
+            audio.pause()
+            Pausing()
+        }
+
+        function SkipBack() {
+            i = (i != 0) ? --i : max;
+            getAudio()
+            Play()
+        }
+
+        function SkipForward() {
+            i = (i == max) ? 0 : ++i;
+            getAudio()
+            Play()
+        }
+
+        function Back() {
+            audio.currentTime -= 5
+            if (audio.currentTime <= 0) {
+                i = 0
+            }
+        }
+
+        function Forward() {
+            audio.currentTime += 5
+            if (audio.currentTime >= audio.buffered.end(0)) {
+                SkipForward()
+            }
+        }
+
+        function Playing() {
+            play.style.display = "none";
+            pause.style.display = "block"
+        }
+
+        function Pausing() {
+            play.style.display = "block";
+            pause.style.display = "none"
+        }
+
+
+        function getAudio() {
+            audio.src = song[i].path
+            img.src = song[i].img
+            name.textContent = song[i].name
+            singer.textContent = song[i].singer
+        }
+    </script>
+</body>
+
+</html>
