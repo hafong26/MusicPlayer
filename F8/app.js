@@ -151,6 +151,9 @@ var app = {
                     songs[i].classList.remove('active')
                 song.classList.add('active')
                 song.scrollIntoView({ block: "end", behavior: 'smooth' })
+                that.loadCurrentSong();
+                audio.play()
+
             }
         })
         songs[this.currentIndex].classList.add('active')
